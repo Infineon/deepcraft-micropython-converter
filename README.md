@@ -8,20 +8,18 @@ This utility automates the conversion of DEEPCRAFT™ Studio model exports into 
 
 2. A compatible DEEPCRAFT™ model (C source files and headers) generated from DEEPCRAFT™ studio
 
-3. GnuWin32 Make [here](https://sourceforge.net/projects/gnuwin32/)
+3. [GnuWin32 Make](https://sourceforge.net/projects/gnuwin32/)
 
 # Usage
 
 The script is pip installable by:
 
-    ```bash
     pip install git+https://github.com/Infineon/deepcraft-micropython-converter.git
-    ```
+
 Install the requirements:
 
-    ```bash
     pip install -r requirements.txt
-    ```
+
 *Note: Ensure to install the script in the root directory of your DEEPCRAFT™ project.*
 
 # Integration with DEEPCRAFT™ 
@@ -48,9 +46,8 @@ Install the requirements:
 
 3) This generates `deepcraft_model.mpy` at the project root, ready to be copied to your edge device’s filesystem. Use any micropython supported IDE's to drop the file into your device and then use it like any other module:
 
-    ```bash
     import deepcraft_model
-    ```
+
 
 # Supported API's
 
