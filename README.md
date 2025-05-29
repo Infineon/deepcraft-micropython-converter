@@ -45,9 +45,8 @@ Install the requirements:
 ![Alt text](images/utility_execution.png)
 
 3) This generates `deepcraft_model.mpy` at the project root, ready to be copied to your edge device’s filesystem. Use any micropython supported IDE's to drop the file into your device and then use it like any other module:
-
-    import deepcraft_model
-
+    
+        import deepcraft_model
 
 # Supported API's
 
