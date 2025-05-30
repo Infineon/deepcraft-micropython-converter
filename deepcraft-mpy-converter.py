@@ -138,12 +138,30 @@ def clone_micropython_repo(repo_url, target_dir, branch, folders_to_clone):
         err(f"Git error: {e}")
         sys.exit(1)
 
-def copy_model_files(source_dir, target_dir):
+		
+def copy_model_files(target_dir):
     print_block("Copying Model Files")
+    
+    default_source_dir = "./Models"
+    user_input = input(f"Enter path to model files or press enter for default location [{default_source_dir}]: ").strip()
+    source_dir = user_input if user_input else default_source_dir
+
+    # Check if user gave a specific folder directly containing model.c/h
+    model_c = os.path.join(source_dir, "model.c")
+    model_h = os.path.join(source_dir, "model.h")
+
+    if os.path.exists(model_c) and os.path.exists(model_h):
+        # Direct model folder given
+        shutil.copy(model_c, target_dir)
+        shutil.copy(model_h, target_dir)
+        info(f"Copied model files from {source_dir}")
+        return
+
+    # Else, search recursively for Gen folders
     model_dirs = glob.glob(os.path.join(source_dir, "**", "Gen"), recursive=True)
 
     if not model_dirs:
-        warn("No Gen directories found.")
+        warn(f"No 'Gen' directories found in {source_dir}.")
         return
 
     for model_dir in model_dirs:
@@ -210,7 +228,7 @@ if __name__ == "__main__":
     source_dir = "./Models"
     target_deepcraft_dir = os.path.join(target_dir, "examples/natmod/deepcraft").replace("\\", "/")
 
-    copy_model_files(source_dir, target_deepcraft_dir)
+    copy_model_files(target_deepcraft_dir)
     remove_static_inplace(os.path.join(target_deepcraft_dir, "model.c"))
     run_make()
 
