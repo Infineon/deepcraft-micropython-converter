@@ -41,10 +41,13 @@ def prepend_gcc_to_env(gcc_bin_path: str):
 
 def setup_make():
     print_block("Setup make path", Fore.BLUE)
-    default_make_path = r"C:\Program Files (x86)\GnuWin32\bin\make.exe"
+    default_make_path = shutil.which("make") or r"C:\Program Files (x86)\GnuWin32\bin\make.exe"
     make_path = input(f"Enter full path to make.exe [{default_make_path}] (press Enter to accept default): ").strip()
     if not make_path:
         make_path = default_make_path
+    if not os.path.isfile(make_path):
+        err(f"make.exe not found at {make_path}. Please ensure it is installed and accessible.")
+        sys.exit(1)
     return make_path
 
 def is_gcc_present_locally(search_root):
