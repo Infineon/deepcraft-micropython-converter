@@ -1,12 +1,12 @@
 # DEEPCRAFT™ MicroPython Converter
 
-This utility automates the conversion of DEEPCRAFT™ Studio model exports into .mpy modules compatible with MicroPython projects. It simplifies integration of AI/ML models into MicroPython applications running on platforms like Infineon’s PSoC™ 6.
+This utility automates the conversion of DEEPCRAFT™ Studio model exports into .mpy modules compatible with MicroPython projects. It simplifies integration of AI/ML models into MicroPython applications running on platforms like Infineon’s PSOC™ 6.
 
 # Requirements
 
 1. Python 3.12.0 +
 
-2. A compatible DEEPCRAFT™ model (C source files and headers) generated from DEEPCRAFT™ studio
+2. A compatible DEEPCRAFT™ model (C source files and headers) generated from DEEPCRAFT™ Studio
 
 3. [GnuWin32 Make](https://sourceforge.net/projects/gnuwin32/)
 
@@ -44,11 +44,11 @@ Install the requirements:
 
 ![Alt text](images/utility_execution.png)
 
-3) This generates `deepcraft_model.mpy` at the project root, ready to be copied to your edge device’s filesystem. Use any micropython supported IDE's to drop the file into your device and then use it like any other module:
+3) This generates `deepcraft_model.mpy` at the project root, ready to be copied to your edge device’s filesystem. Use any MicroPython supported IDE's to drop the file into your device and then use it like any other module:
     
         import deepcraft_model
 
-# Supported API's
+# Supported APIs
 
 Below is a list of supported APIs exposed by the compiled `.mpy` module. Use these functions to interact with your model instance for initialization, data input, and inference.
 
@@ -65,5 +65,5 @@ Below is a list of supported APIs exposed by the compiled `.mpy` module. Use the
 
 # Other Resources 
 
-Installation and other details around DEEPCRAFT™ can be found [here](https://www.infineon.com/cms/en/design-support/software/deepcraft-edge-ai-solutions/#!designsupport).
+Installation instructions and other details around DEEPCRAFT™ can be found [here](https://www.infineon.com/cms/en/design-support/software/deepcraft-edge-ai-solutions/#!designsupport).
 
