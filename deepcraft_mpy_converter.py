@@ -23,6 +23,20 @@ def err(msg):  print(Fore.RED + Style.BRIGHT + "[ERROR] " + msg)
 # === Core Functions ===
 
 def prepend_gcc_to_env(gcc_bin_path: str):
+    """
+    Prepends a GCC binary path to the system PATH environment variable.
+    This function adds the specified GCC binary directory to the beginning of the
+    PATH environment variable, ensuring it takes precedence over other paths.
+    If the path already exists in PATH, it removes the duplicate before prepending.
+    Args:
+        gcc_bin_path (str): The file system path to the GCC binary directory.
+                           Will be converted to an absolute path.
+    Raises:
+        ValueError: If the specified path does not exist or is not a directory.
+    Note:
+        This function modifies the PATH environment variable for the current process
+        and uses Windows-style path separators (semicolon).
+    """
     gcc_bin_path = os.path.abspath(gcc_bin_path)
 
     if not os.path.isdir(gcc_bin_path):
@@ -40,6 +54,25 @@ def prepend_gcc_to_env(gcc_bin_path: str):
 
 
 def setup_make():
+    """
+    Set up and validate the path to the make executable.
+    
+    This function prompts the user to enter the path to the make.exe executable,
+    with a default path automatically detected using shutil.which() or falling back
+    to a common Windows installation location. It validates that the specified
+    path exists and points to a valid file.
+    
+    Returns:
+        str: The validated path to the make executable.
+        
+    Raises:
+        SystemExit: If the make executable is not found at the specified path.
+        
+    Note:
+        - Uses shutil.which() to auto-detect make in system PATH
+        - Falls back to Windows GnuWin32 default installation path
+        - Exits the program if make.exe cannot be found at the specified location
+    """
     print_block("Setup make path", Fore.BLUE)
     default_make_path = shutil.which("make") or r"C:\Program Files (x86)\GnuWin32\bin\make.exe"
     make_path = input(f"Enter full path to make.exe [{default_make_path}] (press Enter to accept default): ").strip()
@@ -57,6 +90,23 @@ def is_gcc_present_locally(search_root):
     return False
 
 def install_gcc():
+    """
+    Install GCC ARM None EABI toolchain for MicroPython native module compilation.
+    This function downloads and installs the GCC ARM None EABI compiler toolchain
+    required for compiling native modules for MicroPython. It checks if GCC is already
+    present locally before attempting to download and install it.
+    The function performs the following steps:
+    1. Checks if GCC is already installed in the local directory
+    2. If not present, downloads the GCC toolchain from the specified GitHub release
+    3. Extracts the downloaded zip file to the designated directory
+    4. Removes the temporary zip file after extraction
+    5. Prepends the GCC binary path to the environment PATH
+    Raises:
+        Exception: If the download, extraction, or installation process fails
+    Note:
+        This function is specifically designed for Windows environments and uses
+        the MTB GCC ARM None EABI 11.3.1.67 toolchain.
+    """
     print_block("Installing GCC")
     gcc_dir = r"..\mpy\examples\natmod\deepcraft"
     gcc_bin = r"..\mpy\examples\natmod\deepcraft\gcc\bin"
@@ -89,6 +139,24 @@ def install_gcc():
         raise
 
 def run_make():
+    """
+    Execute the make process to convert model to .mpy format.
+    This function performs the following operations:
+    1. Sets up the make environment and validates required directories and files
+    2. Executes the Makefile with specific architecture and OS parameters
+    3. Monitors the build process and displays output in real-time
+    4. Upon successful compilation, extracts the generated deepcraft_model.mpy file
+       to the root location
+    The function validates:
+    - Existence of the make directory (../mpy/examples/natmod/deepcraft)
+    - Presence of Makefile in the target directory
+    - Availability of the make tool
+    Build parameters:
+    - ARCH: armv7emsp (ARM Cortex-M architecture)
+    - OS: Windows_NT
+    Raises:
+        SystemExit: If any validation fails or if the make process returns a non-zero exit code
+    """
     print_block("Start model conversion to .mpy")
     make_path = setup_make()
     make_dir = os.path.join("..", "mpy", "examples", "natmod", "deepcraft")
@@ -139,7 +207,26 @@ def run_make():
         err(f"Exception during make: {e}")
         sys.exit(1)
 
+
 def clone_micropython_repo(repo_url, target_dir, branch, folders_to_clone):
+    """
+    Clone a MicroPython repository with sparse checkout to download only specific folders.
+    This function performs a sparse clone of the MicroPython repository, checking out only
+    the specified folders to minimize download size and storage requirements.
+    Args:
+        repo_url (str): The URL of the MicroPython repository to clone
+        target_dir (str): The local directory path where the repository will be cloned
+        branch (str): The branch name to checkout after cloning
+        folders_to_clone (list): List of folder paths to include in the sparse checkout
+    Returns:
+        None
+    Raises:
+        SystemExit: If any git command fails during the cloning process
+    Note:
+        - If the target directory already exists, the function will skip cloning
+        - Uses git sparse-checkout to only download specified folders
+        - Exits the program if any git operation fails
+    """
     print_block("Cloning MicroPython Repo")
 
     if os.path.exists(target_dir):
@@ -156,41 +243,66 @@ def clone_micropython_repo(repo_url, target_dir, branch, folders_to_clone):
     except subprocess.CalledProcessError as e:
         err(f"Git error: {e}")
         sys.exit(1)
-		
+
+
 def copy_model_files(target_dir):
+    """
+    Copy machine learning model files from a source directory to a target directory.
+    This function interactively prompts the user for:
+    - Source directory path (defaults to "../Models")
+    - Model source file name (defaults to "model.c") 
+    - Model header file name (defaults to "model.h")
+    The function copies the specified model files to the target directory and
+    renames them to standardized names "model.c" and "model.h".
+    Args:
+        target_dir (str): The destination directory where model files will be copied
+    Raises:
+        SystemExit: If the specified model files are not found in the source directory
+
+    """
     print_block("Copying Model Files")
     
-    default_source_dir = "../Models"
-    user_input = input(f"Enter path to model files or base dir to search for Gen [{default_source_dir}]: ").strip()
-    source_dir = user_input if user_input else default_source_dir
+    default_source_dir = "../Models" 
 
-    model_c = os.path.join(source_dir, "model.c")
-    model_h = os.path.join(source_dir, "model.h")
+    source_dir = input(f"Enter path to model files folder: ").strip() or default_source_dir
+    # Ask for model file names
+    default_model_c = "model.c"
+    default_model_h = "model.h"
 
-    if os.path.exists(model_c) and os.path.exists(model_h):
-        shutil.copy(model_c, target_dir)
-        shutil.copy(model_h, target_dir)
-        info(f"Copied model files from {source_dir}")
-        return
+    model_c_name = input(f"Enter model source file name: ").strip() or default_model_c
+    model_h_name = input(f"Enter model header file name: ").strip() or default_model_h
 
-    model_dirs = glob.glob(os.path.join(source_dir, "**", "Gen"), recursive=True)
+    model_c_path = os.path.join(source_dir, model_c_name)
+    model_h_path = os.path.join(source_dir, model_h_name)
 
-    if not model_dirs:
-        warn(f"No 'Gen' directories found in {source_dir}.")
-        return
+    if not os.path.exists(model_c_path) or not os.path.exists(model_h_path):
+        warn(f"Model files not found: {model_c_path}, {model_h_path}")
+        sys.exit(1)
+    
+    # Copy and rename to model.c and model.h in target_dir
+    shutil.copy(model_c_path, os.path.join(target_dir, "model.c"))
+    shutil.copy(model_h_path, os.path.join(target_dir, "model.h"))
+    info(f"Copied and renamed model files to {target_dir} as model.c and model.h")
 
-    for model_dir in model_dirs:
-        model_c = os.path.join(model_dir, "model.c")
-        model_h = os.path.join(model_dir, "model.h")
-
-        if os.path.exists(model_c) and os.path.exists(model_h):
-            shutil.copy(model_c, target_dir)
-            shutil.copy(model_h, target_dir)
-            info(f"Copied model files from {model_dir}")
-        else:
-            warn(f"Missing model files in {model_dir}")
 
 def remove_static_inplace(filename):
+    """
+    Remove 'static' keyword from variable declarations in a C/C++ file in-place.
+    This function reads a file, removes the 'static' keyword from lines that contain
+    static variable declarations (but not static function declarations), and writes
+    the modified content back to the same file.
+    Args:
+        filename (str): Path to the file to be modified
+    Returns:
+        None
+    Raises:
+        SystemExit: If the specified file is not found
+    Note:
+        - Only removes 'static' from lines that don't contain function declarations
+        - Function declarations are identified by the presence of '(' after 'static'
+        - The file is modified in-place
+        - Prints status messages during execution
+    """
     print_block(f"Getting files ready to convert to MPY model")
     modified_lines = []
     try:
@@ -208,10 +320,47 @@ def remove_static_inplace(filename):
         sys.exit(1)
 
 def remove_readonly(func, path, excinfo):
+    """
+    Remove read-only attribute from a file and execute the provided function.
+
+    This function is typically used as an error handler for shutil.rmtree() when
+    encountering read-only files that cannot be deleted. It changes the file
+    permissions to writable and then calls the original function again.
+
+    Args:
+        func (callable): The function that failed due to read-only permissions
+        path (str): The file path that has read-only permissions
+        excinfo (tuple): Exception information (not used but required by error handler signature)
+
+    Returns:
+        None
+
+    Note:
+        This function is designed to be used as the onerror parameter in shutil.rmtree().
+    """
     os.chmod(path, stat.S_IWRITE)
     func(path)
 
 def cleanup_mpy_files():
+    """
+    Removes the '../mpy' folder and all its contents after user confirmation.
+    This function checks if the '../mpy' directory exists and prompts the user
+    for confirmation before deleting it. If the user confirms (enters 'Y' or 'y'),
+    the entire folder structure is removed using shutil.rmtree with error handling
+    for read-only files.
+    The function handles the following scenarios:
+    - If the folder doesn't exist, prints a message and returns early
+    - Prompts user for confirmation before deletion
+    - Uses remove_readonly error handler to deal with read-only files
+    - Provides feedback on successful cleanup or error conditions
+    Returns:
+        None
+    Raises:
+        Exception: Catches and reports any errors that occur during folder deletion
+    Note:
+        This operation is irreversible. All files and subdirectories in the
+        '../mpy' folder will be permanently deleted.
+    """
     mpy_folder = "../mpy"
     if not os.path.exists(mpy_folder):
         print(f"Folder '{mpy_folder}' does not exist. Nothing to clean up.")
