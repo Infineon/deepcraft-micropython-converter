@@ -23,27 +23,33 @@ Before using the converter, you need to have a DEEPCRAFT™ model generated from
 1. Open the command line and navigate to the directory where you want to install the converter.
 
 2. Install the model conversion script by executing the following command:
-
-    pip install git+https://github.com/Infineon/deepcraft-micropython-converter.git --target .
+```
+pip install git+https://github.com/Infineon/deepcraft-micropython-converter.git --target .
+```
 
 3. Once installed, you can run the converter using:
-
-    python deepcraft_micropython_converter.py
+```
+python deepcraft_micropython_converter.py
+```
 
 4. Follow the on-screen prompts to provide the path to your DEEPCRAFT™ model files and specify any additional options as needed.
 
 ### Deploying the .mpy Model
 
 After the script successfully ran through and converted the model it will show:
-    "GEN deepcraft_model.mpy"
-    [INFO] Makefile executed successfully.
+```
+"GEN deepcraft_model.mpy"
+[INFO] Makefile executed successfully.
+```
     
-Now you can locate the file `deepcraft_model.mpy` in the project folder and (upload it)[https://ifx-micropython.readthedocs.io/en/latest/psoc6/mpy-usage.html#the-micropython-filesystem] to your edge device running MicroPython.
+Now you can locate the file `deepcraft_model.mpy` in the project folder and [upload it](https://ifx-micropython.readthedocs.io/en/latest/psoc6/mpy-usage.html#the-micropython-filesystem) to your edge device running MicroPython.
 
 ### Using the Model in MicroPython
 
 After uploading the `.mpy` file to your MicroPython device, you can import your model by executing:
-    import deepcraft_model
+```
+import deepcraft_model
+```
 
 Below is a list of supported APIs exposed by the compiled `.mpy` module. Use these functions to interact with your model instance for initialization, data input, and inference.
 
