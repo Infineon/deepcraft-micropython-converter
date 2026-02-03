@@ -368,7 +368,7 @@ def cleanup_mpy_files():
         print(f"Folder '{mpy_folder}' does not exist. Nothing to clean up.")
         return
 
-    answer = input(f"Do you want to delete the entire '{mpy_folder}' folder? (Y/N): ").strip().lower()
+    answer = input(f"Do you want to delete the entire '{mpy_folder}' folder? (y/N): ").strip().lower()
     if answer == 'y':
         print(f"Removing entire folder: {mpy_folder} ...")
         try:
