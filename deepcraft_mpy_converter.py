@@ -1,7 +1,6 @@
 import os
 import re
 import sys
-import glob
 import shutil
 import zipfile
 import subprocess
