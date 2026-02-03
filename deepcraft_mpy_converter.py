@@ -8,7 +8,7 @@ import subprocess
 import requests
 import stat
 
-from colorama import init, Fore, Back, Style
+from colorama import init, Fore, Style
 init(autoreset=True)
 
 # === Utility Functions ===
@@ -74,10 +74,12 @@ def setup_make():
         - Exits the program if make.exe cannot be found at the specified location
     """
     print_block("Setup make path", Fore.BLUE)
-    default_make_path = shutil.which("make") or r"C:\Program Files (x86)\GnuWin32\bin\make.exe"
-    make_path = input(f"Enter full path to make.exe [{default_make_path}] (press Enter to accept default): ").strip()
-    if not make_path:
-        make_path = default_make_path
+    make_path = shutil.which("make")
+    if make_path is None:
+        make_path = input(f'"make" not found! Enter full path to "make.exe": ').strip()
+    else:
+        info(f'Found "make" at: {make_path}')
+    
     if not os.path.isfile(make_path):
         err(f"make.exe not found at {make_path}. Please ensure it is installed and accessible.")
         sys.exit(1)
@@ -262,15 +264,15 @@ def copy_model_files(target_dir):
     """
     print_block("Copying Model Files")
     
-    default_source_dir = "../Models" 
+    default_source_dir = "./"
 
-    source_dir = input(f"Enter path to model files folder: ").strip() or default_source_dir
     # Ask for model file names
     default_model_c = "model.c"
     default_model_h = "model.h"
 
-    model_c_name = input(f"Enter model source file name: ").strip() or default_model_c
-    model_h_name = input(f"Enter model header file name: ").strip() or default_model_h
+    model_c_name = input(f"Enter model source file name (default: {default_model_c}): ").strip() or default_model_c
+    model_h_name = input(f"Enter model header file name (default: {default_model_h}): ").strip() or default_model_h
+    source_dir = input(f"Enter path to {model_c_name} and {model_h_name} (default: current folder): ").strip() or default_source_dir
 
     model_c_path = os.path.join(source_dir, model_c_name)
     model_h_path = os.path.join(source_dir, model_h_name)
