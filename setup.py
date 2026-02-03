@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="deepcraft-mpy-converter",
-    version="0.1.0",
+    version="0.2.0",
     py_modules=["deepcraft_mpy_converter"],
     entry_points={
         "console_scripts": [
@@ -13,6 +13,7 @@ setup(
         "colorama",
         "requests",
         "pyelftools",
+        "ar",
     ],
     author="Infineon Technologies",
     description="Utility to convert C model into MicroPython format.",
