@@ -1,54 +1,49 @@
 # DEEPCRAFT™ MicroPython Converter
 
-This utility automates the conversion of DEEPCRAFT™ Studio model exports into .mpy modules compatible with MicroPython projects. It simplifies integration of AI/ML models into MicroPython applications running on platforms like Infineon’s PSOC™ 6.
+## Overview
 
-# Requirements
+This utility automates the conversion of [DEEPCRAFT™ Studio](https://www.infineon.com/design-resources/embedded-software/deepcraft-edge-ai-solutions/deepcraft-studio) model exports into .mpy modules compatible with MicroPython projects. It simplifies integration of AI/ML models into MicroPython applications running on platforms like Infineon’s [PSOC™ 6](https://www.infineon.com/evaluation-board/CY8CKIT-062S2-AI).
 
-1. Python 3.12.0 +
+## Getting Started
 
-2. A compatible DEEPCRAFT™ model (C source files and headers) generated from DEEPCRAFT™ Studio
+### Requirements
 
-3. [GnuWin32 Make](https://sourceforge.net/projects/gnuwin32/)
+1. [Python](https://www.python.org/) 3.12.0 or higher and [pip](https://pip.pypa.io/en/stable/).
 
-# Usage
+2. A compatible DEEPCRAFT™ model (C source files and headers) generated from [DEEPCRAFT™ Studio](https://www.infineon.com/design-resources/embedded-software/deepcraft-edge-ai-solutions/deepcraft-studio).
 
-The script is pip installable by:
+3. [GnuWin32 Make](https://gnuwin32.sourceforge.net/downlinks/make.php).
 
-    pip install git+https://github.com/Infineon/deepcraft-micropython-converter.git
+### Preparation
 
-Install the requirements:
+Before using the converter, you need to have a DEEPCRAFT™ model generated from DEEPCRAFT™ Studio. Follow the instructions in the [DEEPCRAFT™ Studio documentation](https://developer.imagimob.com/deepcraft-studio/model-training/generating-model) to create and export your model.
 
-    pip install -r requirements.txt
+### Installation and Usage
 
-*Note: Ensure to install the script in the root directory of your DEEPCRAFT™ project.*
+1. Open the command line and navigate to the directory where you want to install the converter.
 
-# Integration with DEEPCRAFT™ 
+2. Install the model conversion script by executing the following command:
 
-1) You can set up the converter as an external tool in DEEPCRAFT™ Studio:
+    pip install git+https://github.com/Infineon/deepcraft-micropython-converter.git --target .
 
-    1. Go to Tools > Options > External Tools
+3. Once installed, you can run the converter using:
 
-    2. Add a new row with the following:
+    python deepcraft_micropython_converter.py
 
-        - `File Filter`: *.py
+4. Follow the on-screen prompts to provide the path to your DEEPCRAFT™ model files and specify any additional options as needed.
 
-        - `Menu Path`: Run Script
+### Deploying the .mpy Model
 
-        - `Console`: Cmd (keep)
-
-        - `Confirm dialog`: ✅ Checked
-
-        - `Command`: python "path/to/deepcraft_micropython_converter.py"
-
-2) After generating the model and preparing for deployment, right-click the script and select `Run Script` to launch the utility. Follow the terminal instructions. On success, you’ll see the output:
-
-![Alt text](images/utility_execution.png)
-
-3) This generates `deepcraft_model.mpy` at the project root, ready to be copied to your edge device’s filesystem. Use any MicroPython supported IDE's to drop the file into your device and then use it like any other module:
+After the script successfully ran through and converted the model it will show:
+    "GEN deepcraft_model.mpy"
+    [INFO] Makefile executed successfully.
     
-        import deepcraft_model
+Now you can locate the file `deepcraft_model.mpy` in the project folder and (upload it)[https://ifx-micropython.readthedocs.io/en/latest/psoc6/mpy-usage.html#the-micropython-filesystem] to your edge device running MicroPython.
 
-# Supported APIs
+### Using the Model in MicroPython
+
+After uploading the `.mpy` file to your MicroPython device, you can import your model by executing:
+    import deepcraft_model
 
 Below is a list of supported APIs exposed by the compiled `.mpy` module. Use these functions to interact with your model instance for initialization, data input, and inference.
 
@@ -63,7 +58,6 @@ Below is a list of supported APIs exposed by the compiled `.mpy` module. Use the
 | `dequeue(result)`         | Outputs classification result as class probabilities  | `<list>` of size `get_model_output_dim()`  | `0`: Success<br> `-1`: Error<br> `-2`: Internal memory allocation error          | `model.dequeue([0.0, 0.0, ...])`                 |
 
 
-# Other Resources 
+## Other Resources 
 
-Installation instructions and other details around DEEPCRAFT™ can be found [here](https://www.infineon.com/cms/en/design-support/software/deepcraft-edge-ai-solutions/#!designsupport).
-
+Installation instructions and other details around DEEPCRAFT™ Studio can be found [here](https://developer.imagimob.com/deepcraft-studio).
