@@ -197,6 +197,10 @@ def run_make():
             if os.path.exists(src_mpy_path):
                 shutil.move(src_mpy_path, dst_mpy_path)
                 info(f"Moved {mpy_filename} to {dst_mpy_path}")
+                mpy_size = os.path.getsize(dst_mpy_path)
+                info(f"Output .mpy size: {mpy_size / 1024:.2f} kB")
+                if mpy_size > 200 * 1024:
+                    warn(f"Output .mpy file exceeds 200 kB ({mpy_size / 1024:.2f} kB). This may cause issues on devices with limited memory. Consider optimizing your model.")
             else:
                 warn(f"{mpy_filename} not found at {src_mpy_path}")
 		
