@@ -85,21 +85,21 @@ output_buffer_size > window_shape * input_shape * sizeof(data_type)
 Where `data_type` is the data type of the output buffer (usually `float` = 4 bytes).
 
 Then, to determine the exact buffer size, round up to the nearest multiple of 2^n that is greater than the calculated size. For example, if the calculated size is 300 bytes, you would round up to 512 bytes (2^9) to ensure sufficient memory allocation for the output buffer.
-```
 
 Below is a list of supported APIs exposed by the compiled `.mpy` module. Use these functions to interact with your model instance for initialization, data input, and inference.
 
+### API Reference
 
-| Function                  | Description                                           | Input Arguments                                           | Return                                  | Sample Usage                                     |
-|---------------------------|-------------------------------------------------------|------------------------------------------------------------|------------------------------------------|--------------------------------------------------|
-| `DEEPCRAFT()`             | Creates an instance for your model                    | None                                                       | `deepcraft` object                       | `import deepcraft_model as m`<br>`model = m.DEEPCRAFT()` |
-| `init()`                  | Initializes the model                                 | None                                                       | None                                     | `model.init()`                                   |
-| `get_model_input_dim()`   | Returns expected number of sensor values per inference| None                                                       | `int`                                    | `model.get_model_input_dim()`                    |
-| `get_model_output_dim()`  | Returns number of output classes                      | None                                                       | `int`                                    | `model.get_model_output_dim()`                   |
-| `enqueue(data)`           | Inputs sensor data to the model                       | `<list>` of size `get_model_input_dim()`                   | `0`: Success<br> `-1`: Error          | `model.enqueue([0.0, 0.1, ...])`                 |
-| `dequeue(result)`         | Outputs classification result as class probabilities  | `<list>` of size `get_model_output_dim()`  | `0`: Success<br> `-1`: Error<br> `-2`: Internal memory allocation error          | `model.dequeue([0.0, 0.0, ...])`                 |
+| Function                  | Description                                            | Input Arguments                            | Return                                                                        | Sample Usage                                              |
+|---------------------------|--------------------------------------------------------|--------------------------------------------|-------------------------------------------------------------------------------|-----------------------------------------------------------|
+| `DEEPCRAFT()`             | Creates an instance for your model                     | None                                       | `deepcraft` object                                                            | `import deepcraft_model as m`<br>`model = m.DEEPCRAFT()`  |
+| `init()`                  | Initializes the model                                  | None                                       | None                                                                          | `model.init()`                                            |
+| `get_model_input_dim()`   | Returns expected number of sensor values per inference | None                                       | `int`                                                                         | `model.get_model_input_dim()`                             |
+| `get_model_output_dim()`  | Returns number of output classes                       | None                                       | `int`                                                                         | `model.get_model_output_dim()`                            |
+| `enqueue(data)`           | Inputs sensor data to the model                        | `<list>` of size `get_model_input_dim()`   | `0`: Success<br> `-1`: Error                                                  | `model.enqueue([0.0, 0.1, ...])`                          |
+| `dequeue(result)`         | Outputs classification result as class probabilities   | `<list>` of size `get_model_output_dim()`  | `0`: Success<br> `-1`: Error<br> `-2`: Internal memory allocation error       | `model.dequeue([0.0, 0.0, ...])`                          |
 
 
-## Other Resources 
+## Other Resources
 
 Installation instructions and other details around DEEPCRAFT™ Studio can be found [here](https://developer.imagimob.com/deepcraft-studio).
