@@ -18,6 +18,9 @@ This utility automates the conversion of [DEEPCRAFT™ Studio](https://www.infin
 
 Before using the converter, you need to have a DEEPCRAFT™ model generated from DEEPCRAFT™ Studio. Follow the instructions in the [DEEPCRAFT™ Studio documentation](https://developer.imagimob.com/deepcraft-studio/model-training/generating-model) to create and export your model.
 
+Use these settings when exporting your model from DEEPCRAFT™ Studio:
+![Code Generation Settings](images/code_generation_settings.png)
+
 ### Installation and Usage
 
 1. Open the command line and navigate to the directory where you want to install the converter.
