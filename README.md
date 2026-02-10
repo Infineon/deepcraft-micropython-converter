@@ -32,7 +32,7 @@ pip install git+https://github.com/Infineon/deepcraft-micropython-converter.git 
 
 3. Once installed, you can run the converter using:
 ```
-python deepcraft_micropython_converter.py
+python deepcraft_mpy_converter.py
 ```
 
 4. Follow the on-screen prompts to provide the path to your DEEPCRAFT™ model files and specify any additional options as needed.
