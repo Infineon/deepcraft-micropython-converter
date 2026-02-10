@@ -83,9 +83,8 @@ Example:
 output_buffer = array.array('f', [0.0] * len(IMAI_DATA_OUT_SYMBOLS))
 ```
 
-Below is a list of supported APIs exposed by the compiled `.mpy` module. Use these functions to interact with your model instance for initialization, data input, and inference.
-
 ### API Reference
+Below is a list of supported APIs exposed by the compiled `.mpy` module. Use these functions to interact with your model instance for initialization, data input, and inference.
 
 | Function                  | Description                                            | Input Arguments                            | Return                                                                        | Sample Usage                                              |
 |---------------------------|--------------------------------------------------------|--------------------------------------------|-------------------------------------------------------------------------------|-----------------------------------------------------------|
