@@ -76,7 +76,7 @@ must match the value returned by `get_model_output_dim()`.
 `model.enqueue(data)` expects a list `data` of sensor values with a length equal to `input_dim`. Ensure that the data you provide matches this expected input dimension for successful inference.
 
 #### Setting the Output Buffer Size
-Another crucial aspect is properly setting the output buffer size for `model.dequeue(output_buffer)`. The output buffer should be a list with a length equal to `output_dim` and a data type that matches the expected output format (usually `float`).
+Another crucial aspect is properly setting the output buffer size for `model.dequeue(output_buffer)`. The output buffer should be a list with a length equal to `output_dim` and a data type that matches the [expected output format](https://docs.python.org/3.5/library/array.html#module-array).
 
 Example:
 ```
