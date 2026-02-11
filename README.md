@@ -25,17 +25,24 @@ Use these settings when exporting your model from DEEPCRAFT™ Studio:
 
 1. Open the command line and navigate to the directory where you want to install the converter.
 
-2. Install the model conversion script by executing the following command:
+2. Create a new Python virtual environment:
 ```
-pip install git+https://github.com/Infineon/deepcraft-micropython-converter.git --target .
+python -m venv .venv
+.venv\Scripts\activate
 ```
 
-3. Once installed, you can run the converter using:
+3. Install the model conversion script by executing the following command:
 ```
+pip install git+https://github.com/Infineon/deepcraft-micropython-converter.git
+```
+
+4. Download the converter script from this repository and execute it:
+```
+curl https://raw.githubusercontent.com/Infineon/deepcraft-micropython-converter/refs/heads/main/deepcraft_mpy_converter.py > deepcraft_mpy_converter.py
 python deepcraft_mpy_converter.py
 ```
 
-4. Follow the on-screen prompts to provide the path to your DEEPCRAFT™ model files and specify any additional options as needed.
+5. Follow the on-screen prompts to provide the path to your DEEPCRAFT™ model files and specify any additional options as needed.
 
 ### Deploying the .mpy Model
 
