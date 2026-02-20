@@ -6,10 +6,10 @@ This directory contains example scripts demonstrating how to use DEEPCRAFT model
 
 Before running these examples, ensure you have:
 
-1. **Converted Model**: A `.mpy` model file generated using the [DEEPCRAFT MicroPython Converter](../README.md)
+1. **Converted Model**: A `.mpy` model file generated using [DEEPCRAFT MicroPython Converter](../README.md)
 2. **Hardware**: Compatible MicroPython device (e.g., Infineon PSOC™ 6 CY8CKIT-062S2-AI)
 3. **Sensors**: Appropriate sensors for your model (e.g., BMI270 IMU for motion models)
-4. **MicroPython Firmware**: Device running MicroPython with necessary drivers
+4. **MicroPython Firmware**: Device running MicroPython with necessary drivers ([BMI270 driver used](https://github.com/Infineon/deepcraft-micropython-data-acquisition/tree/main/sensors))
 
 ## Available Examples
 
